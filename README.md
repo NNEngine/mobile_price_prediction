@@ -1,5 +1,4 @@
 # <div align = "center">mobile_price_prediction</div>
-==============================
 
 A mobile price prediction MLOps Project
 
