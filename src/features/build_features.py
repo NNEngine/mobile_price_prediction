@@ -6,7 +6,6 @@ from sklearn.base import BaseEstimator,TransformerMixin
 from src.data.load_data import load_raw_data
 
 
-
 class NullChecker(BaseEstimator, TransformerMixin):
 	"""Reports null values per column ; optionally drop or fills them."""
 
@@ -55,7 +54,6 @@ class NullChecker(BaseEstimator, TransformerMixin):
 			print(f"Filled nulls with: {self.fill_value}")
 
 		return X
-
 
 
 class OutlierChecker(BaseEstimator, TransformerMixin):
@@ -131,5 +129,42 @@ class OutlierChecker(BaseEstimator, TransformerMixin):
 			print("No Outliers Found!")
 		elif self.strategy == "replace":
 			print("\n Outliers  replaced  with  column median")
+
+		return X
+
+
+class DuplicateChecker(BaseEstimator, TransformerMixin):
+	"""Reports Duplicate Per Column, Optionally drop them"""
+
+	def __init__(self, strategy="report", subset=None, keep="first"):
+		"""
+		strategy : 'report' | 'drop'
+		subset : Columns to Consider (None = all)
+		keep : 'first' | 'last' | False
+		"""
+		self.strategy = strategy
+		self.subset = subset
+		self.keep = keep
+
+	def fit(self, X, y=None):
+		if not isinstance(X, pd.DataFrame):
+			raise TypeError("Input must be pandas DataFrame")
+
+		return self
+
+	def transform(self,X):
+		if not isinstance(X, pd.DataFrame):
+			raise TypeError("Input must be pandas DataFrame")
+
+		X = X.copy()
+		self.n_duplicates_ = X.duplicated(subset=self.subset).sum()
+
+		print("\n----------------------CHECKING DUPLICATES-----------------------")
+		print(f"Total Rows: {len(X)}")
+		print(f"Number of Duplicated Rows Found: {self.n_duplicates_}")
+
+		if self.strategy == "drop" and self.n_duplicates_ > 0:
+			X = X.drop_duplicates(subset=self.subset, keep=self.keep)
+			print(f"Removed Duplicated. Remaining rows: {len(X)}")
 
 		return X
