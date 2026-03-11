@@ -4,6 +4,7 @@ from pathlib import Path
 from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator,TransformerMixin
 from src.data.load_data import load_raw_data
+import tqdm
 
 
 class NullChecker(BaseEstimator, TransformerMixin):
@@ -120,8 +121,8 @@ class OutlierChecker(BaseEstimator, TransformerMixin):
 			n_out = mask.sum()
 			if n_out:
 				found_any = True
-				print(f"  {col:<20} {n_out:>8}", f"[{lower[col]:.2f}, {upper[col]:.2f}]")
-			if self.strategy == "replace":
+				print(f"{col:<20} {n_out:>8}", f"[{lower[col]:.2f}, {upper[col]:.2f}]")
+			if self.strategy == "replace" and n_out > 0:
 				median = X[col].median()
 				X.loc[mask, col] = median
 
@@ -168,3 +169,105 @@ class DuplicateChecker(BaseEstimator, TransformerMixin):
 			print(f"Removed Duplicated. Remaining rows: {len(X)}")
 
 		return X
+
+
+class DataTypeChecker(BaseEstimator, TransformerMixin):
+	"""Reports column data types and flags suspicious mixed-type columns."""
+
+	def __init__(self, expected_dtypes=None):
+		"""
+		expected_dtypes : dict {col: dtype_str}, e.g. {'age': 'int64', 'price': 'float64'}
+		"""
+		self.expected_dtypes = expected_dtypes or {}
+
+	def fit(self, X, y=None):
+		if not isinstance(X, pd.DataFrame):
+			raise TypeError("Input must be pandas DataFrame")
+
+		return self
+
+	def transform(self, X):
+		if not isinstance(X, pd.DataFrame):
+				raise TypeError("Input must be pandas DataFrame")
+
+		print("\n-------------------------------DATA TYPE CHECK----------------------------------\n")
+		print(X.dtypes.to_string())
+
+		# Warn about object columns that might be numeric
+		for col in X.select_dtypes(include="object").columns:
+				converted = pd.to_numeric(X[col], errors="coerce")
+				if converted.notna().mean() > 0.9:
+						print(f"Column '{col}' looks numeric but is stored as object.")
+
+		# Check expected dtypes
+		for col, expected in self.expected_dtypes.items():
+				if col in X.columns and str(X[col].dtype) != expected:
+						print(f"'{col}': expected {expected}, got {X[col].dtype}")
+
+		return X
+
+
+class CardinalityChecker(BaseEstimator, TransformerMixin):
+	"""Reports unique value counts; flags high-cardinality categoricals and constant columns."""
+
+	def __init__(self, high_cardinality_threshold=50):
+			self.high_cardinality_threshold = high_cardinality_threshold
+
+	def fit(self, X, y=None):
+			return self
+
+	def transform(self, X):
+			print("\n----------------------------CARDINALITY CHECK--------------------------\n")
+			for col in X.columns:
+					n_unique = X[col].nunique()
+					dtype = X[col].dtype
+					if n_unique == 1:
+							print(f"'{col}': constant column (only 1 unique value).")
+					elif n_unique == len(X):
+							print(f"'{col}': all values unique — possible ID column.")
+					elif dtype == "object" and n_unique > self.high_cardinality_threshold:
+							print(f"'{col}': high cardinality categorical ({n_unique} unique).")
+			print("  Done.")
+			return X
+
+
+#-----------------------------------BUILD THE PIPELINE----------------------------------
+
+def run_pipeline_with_progress(pipeline, X):
+
+    print("\n================ PIPELINE PROGRESS ================\n")
+
+    steps = pipeline.steps
+    data = X
+
+    for name, transformer in tqdm.tqdm(steps, desc="Pipeline Progress", unit="step"):
+
+        tqdm.tqdm.write(f"\n▶ Running Step: {name}")
+
+        transformer.fit(data)
+        data = transformer.transform(data)
+
+    print("\n✓ Pipeline Completed\n")
+
+    return data
+
+
+def main():
+
+    df = load_raw_data()
+
+    pipeline = Pipeline([
+        ("null_check", NullChecker()),
+        ("duplicate_check", DuplicateChecker(strategy="drop")),
+        ("datatype_check", DataTypeChecker()),
+        ("cardinality_check", CardinalityChecker()),
+        ("outlier_check", OutlierChecker(strategy="replace"))
+    ])
+
+    df_clean = run_pipeline_with_progress(pipeline, df)
+
+    return df_clean
+
+
+if __name__ == "__main__":
+    main()

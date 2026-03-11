@@ -57,3 +57,7 @@ Project Organization
 Since you are working with DVC, avoid reading data directly in feature scripts.
 So,we are building load_data.py in src/data
 ```
+
+```
+run: `python -m src.features.build_features`` from root dir
+```
