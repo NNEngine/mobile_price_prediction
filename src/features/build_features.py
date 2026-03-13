@@ -247,7 +247,7 @@ def run_pipeline_with_progress(pipeline, X):
         transformer.fit(data)
         data = transformer.transform(data)
 
-    print("\n✓ Pipeline Completed\n")
+    print("\Pipeline Completed\n")
 
     return data
 
@@ -266,7 +266,13 @@ def main():
 
     df_clean = run_pipeline_with_progress(pipeline, df)
 
-    return df_clean
+    # save processed dataset
+    ROOT = Path(__file__).resolve().parents[2]
+    processed_path = ROOT / "data" / "processed" / "mobile_price_clean_processed.csv"
+
+    df_clean.to_csv(processed_path, index=False)
+
+    print(f"\nProcessed dataset saved to:\n{processed_path}")
 
 
 if __name__ == "__main__":
