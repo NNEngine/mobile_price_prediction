@@ -20,7 +20,7 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s\n"
     )
-    
+
     datasets = {"raw": load_raw_data(), "processed": load_processed_data()}
     for tag, df in datasets.items():
         logger.info("\n" + pformat(data_summary(df, tag)))
