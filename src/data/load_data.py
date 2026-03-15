@@ -9,13 +9,20 @@ RAW_DATA_PATH = ROOT / "data" / "raw" / "raw_data.csv"
 PROCESSED_DATA_PATH = ROOT / "data" / "processed" / "processed_data.csv"
 
 
+def load_data(df_path: Path) -> pd.DataFrame:
+    if not df_path.exists():
+        raise FileNotFoundError(f"File not found at: {df_path}")
+    return pd.read_csv(df_path)
+
+
 def load_raw_data(df_path: Path = RAW_DATA_PATH)->pd.DataFrame:
 	"""
 	- loads raw data.
 	- returns a dataframe (pd.read_csv(df_path))
 	"""
 
-	return pd.read_csv(df_path)
+	return load_data(df_path)
+
 
 def load_processed_data(df_path: Path=PROCESSED_DATA_PATH)->pd.DataFrame:
 	"""
@@ -23,4 +30,4 @@ def load_processed_data(df_path: Path=PROCESSED_DATA_PATH)->pd.DataFrame:
 	- returns a dataframe (pd.read_csv(df_path))
 	"""
 
-	return pd.read_csv(df_path)
+	return load_data(df_path)
