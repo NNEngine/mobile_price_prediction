@@ -1,5 +1,6 @@
 import pandas as pd
 import logging
+from pathlib import Path
 from pprint import pformat
 from src.data.load_data import load_raw_data, load_processed_data
 import yaml
@@ -57,7 +58,7 @@ if __name__ == "__main__":
         format=params["logging"]["format"]
     )
 
-	datasets = {"raw": load_raw_data(), "processed": load_processed_data()}
+    datasets = {"raw": load_raw_data(), "processed": load_processed_data()}
 
-	for tag, df in datasets.items():
-		logger.info("\n" + pformat(task_type(df[params["target"]["column"]], tag)))
+    for tag, df in datasets.items():
+        logger.info("\n" + pformat(task_type(df[params["target"]["column"]], tag)))

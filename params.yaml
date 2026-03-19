@@ -1,5 +1,5 @@
 target:
-	column: "price_range"
+  column: "price_range"
 
 task:
   ratio: 10  # size/unique threshold for regression vs classification
