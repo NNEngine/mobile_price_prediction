@@ -1,0 +1,13 @@
+target:
+	column: "price_range"
+
+task:
+  ratio: 10  # size/unique threshold for regression vs classification
+
+data:
+  raw_data_path: "data/raw/raw_data.csv"
+  processed_data_path: "data/processed/processed_data.csv"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
