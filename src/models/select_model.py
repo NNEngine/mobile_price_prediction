@@ -47,6 +47,39 @@ def model_list(task: Literal["classification", "regression"]) -> list:
         return params["models"]["classification"]
     return params["models"]["regression"]
 
+
+def select_model(task: Literal["classification", "regression"]) -> str:
+    """
+    Displays available models with IDs and prompts user to select one.
+    Saves the selected model to params.yaml under 'selected_model'.
+
+    Args:
+        task: "classification" or "regression"
+
+    Returns:
+        str: Name of the selected model.
+    """
+    models = model_list(task)
+    prefix = "mc" if task == "classification" else "mr"
+    model_dict = {f"{prefix}{i+1}": model for i, model in enumerate(models)}
+
+    print(f"\nAvailable {task} models:")
+    for model_id, model_name in model_dict.items():
+        print(f"  [{model_id}] {model_name}")
+
+    while True:
+        choice = input("\nEnter model ID: ").strip()
+        if choice in model_dict:
+            selected = model_dict[choice]
+            # save to params.yaml
+            params["selected_model"] = selected
+            with open(ROOT / "params.yaml", "w") as f:
+                yaml.dump(params, f, default_flow_style=False)
+            logger.info(f"Selected model: {selected} ({choice})")
+            return selected
+        print(f"  Invalid ID '{choice}', please choose from the list.")
+
+
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
@@ -55,4 +88,7 @@ if __name__ == "__main__":
 
     processed_df = load_processed_data()
     result = task_type(processed_df[params["target"]["column"]], "processed")
-    logger.info(model_list(result["type"]))
+    models = model_list(result["type"])
+    logger.info(models)
+    selected = select_model(result["type"])
+    logger.info(f"Model saved to params.yaml: {selected}")

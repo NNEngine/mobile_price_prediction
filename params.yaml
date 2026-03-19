@@ -1,43 +1,45 @@
-target:
-  column: "price_range"
-
-task:
-  ratio: 10  # size/unique threshold for regression vs classification
-
 data:
-  raw_data_path: "data/raw/raw_data.csv"
-  processed_data_path: "data/processed/processed_data.csv"
+  processed_data_path: data/processed/processed_data.csv
+  raw_data_path: data/raw/raw_data.csv
 
 logging:
-  level: "INFO"
-  format: "%(asctime)s - %(levelname)s - %(message)s"
+  format: '%(asctime)s - %(levelname)s - %(message)s'
+  level: INFO
 
 models:
   classification:
-    - LogisticRegression
-    - RidgeClassifier
-    - SVC
-    - KNeighborsClassifier
-    - DecisionTreeClassifier
-    - RandomForestClassifier
-    - ExtraTreesClassifier
-    - GradientBoostingClassifier
-    - XGBoostClassifier
-    - LightGBMClassifier
-    - CatBoostClassifier
-    - AdaBoostClassifier
+  - LogisticRegression
+  - RidgeClassifier
+  - SVC
+  - KNeighborsClassifier
+  - DecisionTreeClassifier
+  - RandomForestClassifier
+  - ExtraTreesClassifier
+  - GradientBoostingClassifier
+  - XGBoostClassifier
+  - LightGBMClassifier
+  - CatBoostClassifier
+  - AdaBoostClassifier
   regression:
-    - LinearRegression
-    - Ridge
-    - Lasso
-    - ElasticNet
-    - KNeighborsRegressor
-    - DecisionTreeRegressor
-    - RandomForestRegressor
-    - ExtraTreesRegressor
-    - GradientBoostingRegressor
-    - XGBoostRegressor
-    - LightGBMRegressor
-    - CatBoostRegressor
-    - AdaBoostRegressor
-    - SVR
+  - LinearRegression
+  - Ridge
+  - Lasso
+  - ElasticNet
+  - KNeighborsRegressor
+  - DecisionTreeRegressor
+  - RandomForestRegressor
+  - ExtraTreesRegressor
+  - GradientBoostingRegressor
+  - XGBoostRegressor
+  - LightGBMRegressor
+  - CatBoostRegressor
+  - AdaBoostRegressor
+  - SVR
+
+selected_model: None
+
+target:
+  column: price_range
+
+task:
+  ratio: 10
