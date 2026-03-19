@@ -50,15 +50,41 @@ def model_list(task: Literal["classification", "regression"]) -> list:
 
 def select_model(task: Literal["classification", "regression"]) -> str:
     """
-    Displays available models with IDs and prompts user to select one.
-    Saves the selected model to params.yaml under 'selected_model'.
+    Display available models for a given task and prompt the user to select one.
+
+    This function lists all models corresponding to the specified task
+    (classification or regression), assigns each model a unique ID, and
+    prompts the user to select a model interactively. The selected model
+    is then saved to the `params.yaml` configuration file under the key
+    "selected_model".
 
     Args:
-        task: "classification" or "regression"
+        task (Literal["classification", "regression"]): Type of machine
+            learning task.
 
     Returns:
         str: Name of the selected model.
+
+    Side Effects:
+        - Updates the global `params` dictionary with the selected model.
+        - Writes the updated `params` to `params.yaml`.
+        - Logs the selected model using the configured logger.
+
+    Raises:
+        KeyError: If `params` or required keys are not properly defined.
+        IOError: If there is an issue writing to `params.yaml`.
+
+    Example:
+        >>> selected = select_model("classification")
+        Available classification models:
+          [mc1] LogisticRegression
+          [mc2] RidgeClassifier
+          ...
+        Enter model ID: mc3
+        >>> selected
+        'SVC'
     """
+    
     models = model_list(task)
     prefix = "mc" if task == "classification" else "mr"
     model_dict = {f"{prefix}{i+1}": model for i, model in enumerate(models)}
