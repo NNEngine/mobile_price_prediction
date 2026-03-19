@@ -8,3 +8,12 @@ coverage
 awscli
 flake8
 python-dotenv>=0.5.1
+# added
+pathlib
+pandas
+logging
+yaml
+pandas
+numpy
+matplotlib
+pprint

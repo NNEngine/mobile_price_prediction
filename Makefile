@@ -142,3 +142,13 @@ help:
 		printf "\n"; \
 	}' \
 	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')
+
+
+lint:
+	ruff check src/
+
+format:
+	ruff format src/
+
+lint-fix:
+	ruff check src/ --fix

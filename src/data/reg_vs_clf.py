@@ -1,16 +1,18 @@
-import pandas as pd
 import logging
 from pathlib import Path
 from pprint import pformat
-from src.data.load_data import load_raw_data, load_processed_data
+
+import pandas as pd
 import yaml
+
+from src.data.load_data import load_processed_data, load_raw_data
 
 logger = logging.getLogger(__name__)
 
 # opening params.yaml
 ROOT = Path(__file__).resolve().parents[2]
 
-with open(ROOT / "params.yaml", "r") as f:
+with open(ROOT / "params.yaml") as f:
     params = yaml.safe_load(f)
 
 

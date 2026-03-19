@@ -1,12 +1,13 @@
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 import yaml
 
 # project root
 ROOT = Path(__file__).resolve().parents[2]
 
 # opening params.yaml
-with open(ROOT / "params.yaml", "r") as f:
+with open(ROOT / "params.yaml") as f:
     params = yaml.safe_load(f)
 
 # data path

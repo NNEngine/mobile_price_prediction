@@ -61,3 +61,14 @@ So,we are building load_data.py in src/data
 ```
 run: `python -m src.features.build_features`` from root dir
 ```
+
+```
+ruff (linting + formatting)
+    - Fastest to set up, replaces both flake8 and black
+    - Add to pyproject.toml:
+
+run in terminal
+
+- ruff check src/data
+- ruff check src/data --fix  (fixable issue only not errors)
+```
