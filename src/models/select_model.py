@@ -7,6 +7,12 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
+# opening params.yaml
+    ROOT = Path(__file__).resolve().parents[2]
+    with open(ROOT / "params.yaml", "r") as f:
+        params = yaml.safe_load(f)
+
+
 def model_list(task: Literal["classification", "regression"]) -> list:
     """
     Return a list of model names based on the specified machine learning task.
@@ -38,43 +44,10 @@ def model_list(task: Literal["classification", "regression"]) -> list:
     """
 
     if task == "classification":
-        return [
-            "LogisticRegression",
-            "RidgeClassifier",
-            "SVC",
-            "KNeighborsClassifier",
-            "DecisionTreeClassifier",
-            "RandomForestClassifier",
-            "ExtraTreesClassifier",
-            "GradientBoostingClassifier",
-            "XGBoostClassifier",
-            "LightGBMClassifier",
-            "CatBoostClassifier",
-            "AdaBoostClassifier",
-        ]
-    return [
-        "LinearRegression",
-        "Ridge",
-        "Lasso",
-        "ElasticNet",
-        "KNeighborsRegressor",
-        "DecisionTreeRegressor",
-        "RandomForestRegressor",
-        "ExtraTreesRegressor",
-        "GradientBoostingRegressor",
-        "XGBoostRegressor",
-        "LightGBMRegressor",
-        "CatBoostRegressor",
-        "AdaBoostRegressor",
-        "SVR",
-    ]
+        return params["models"]["classification"]
+    return params["models"]["regression"]
 
 if __name__ == "__main__":
-    # opening params.yaml
-    ROOT = Path(__file__).resolve().parents[2]
-    with open(ROOT / "params.yaml", "r") as f:
-        params = yaml.safe_load(f)
-
     logging.basicConfig(
         level=logging.INFO,
         format=params["logging"]["format"]

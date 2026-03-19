@@ -11,3 +11,33 @@ data:
 logging:
   level: "INFO"
   format: "%(asctime)s - %(levelname)s - %(message)s"
+
+models:
+  classification:
+    - LogisticRegression
+    - RidgeClassifier
+    - SVC
+    - KNeighborsClassifier
+    - DecisionTreeClassifier
+    - RandomForestClassifier
+    - ExtraTreesClassifier
+    - GradientBoostingClassifier
+    - XGBoostClassifier
+    - LightGBMClassifier
+    - CatBoostClassifier
+    - AdaBoostClassifier
+  regression:
+    - LinearRegression
+    - Ridge
+    - Lasso
+    - ElasticNet
+    - KNeighborsRegressor
+    - DecisionTreeRegressor
+    - RandomForestRegressor
+    - ExtraTreesRegressor
+    - GradientBoostingRegressor
+    - XGBoostRegressor
+    - LightGBMRegressor
+    - CatBoostRegressor
+    - AdaBoostRegressor
+    - SVR
