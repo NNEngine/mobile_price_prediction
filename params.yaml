@@ -36,10 +36,125 @@ models:
   - AdaBoostRegressor
   - SVR
 
-selected_model: None
+selected_model: XGBoostClassifier
 
 target:
   column: price_range
 
 task:
   ratio: 10
+
+model_params:
+  classification:
+    LogisticRegression:
+      C: 1.0
+      max_iter: 100
+      solver: "lbfgs"
+
+    RidgeClassifier:
+      alpha: 1.0
+
+    SVC:
+      C: 1.0
+      kernel: "rbf"
+      gamma: "scale"
+
+    KNeighborsClassifier:
+      n_neighbors: 5
+      weights: "uniform"
+
+    DecisionTreeClassifier:
+      max_depth: null
+      min_samples_split: 2
+
+    RandomForestClassifier:
+      n_estimators: 100
+      max_depth: null
+      min_samples_split: 2
+
+    ExtraTreesClassifier:
+      n_estimators: 100
+      max_depth: null
+
+    GradientBoostingClassifier:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 3
+
+    XGBoostClassifier:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 6
+
+    LightGBMClassifier:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: -1
+
+    CatBoostClassifier:
+      iterations: 100
+      learning_rate: 0.1
+      depth: 6
+
+    AdaBoostClassifier:
+      n_estimators: 50
+      learning_rate: 1.0
+
+  regression:
+    LinearRegression:
+      fit_intercept: true
+
+    Ridge:
+      alpha: 1.0
+
+    Lasso:
+      alpha: 1.0
+
+    ElasticNet:
+      alpha: 1.0
+      l1_ratio: 0.5
+
+    KNeighborsRegressor:
+      n_neighbors: 5
+      weights: "uniform"
+
+    DecisionTreeRegressor:
+      max_depth: null
+      min_samples_split: 2
+
+    RandomForestRegressor:
+      n_estimators: 100
+      max_depth: null
+
+    ExtraTreesRegressor:
+      n_estimators: 100
+      max_depth: null
+
+    GradientBoostingRegressor:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 3
+
+    XGBoostRegressor:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 6
+
+    LightGBMRegressor:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: -1
+
+    CatBoostRegressor:
+      iterations: 100
+      learning_rate: 0.1
+      depth: 6
+
+    AdaBoostRegressor:
+      n_estimators: 50
+      learning_rate: 1.0
+
+    SVR:
+      C: 1.0
+      kernel: "rbf"
+      gamma: "scale"
