@@ -72,3 +72,16 @@ run in terminal
 - ruff check src/data
 - ruff check src/data --fix  (fixable issue only not errors)
 ```
+
+**Key design decisions:**
+
+- **`metric_map` with lambdas** — each metric is only computed if requested in `params.yaml`, so you can turn metrics on/off without touching code
+- **`try/except` per metric** — one failing metric (e.g. `roc_auc` on binary) won't crash the entire evaluation
+- **Timestamped JSON reports** — multiple runs don't overwrite each other, maps cleanly to MLflow later
+- **`confusion_matrix` always included** — too useful to make optional, stored as a plain list for JSON compatibility
+- **Takes `comparison` DataFrame** — plugs directly into `predict_model()` output with no transformation needed
+
+The full pipeline flow is now:
+```
+load_data → reg_vs_clf → select_model → train_model → predict_model → evaluate_model
+```

@@ -158,3 +158,26 @@ model_params:
       C: 1.0
       kernel: "rbf"
       gamma: "scale"
+
+metrics:
+  classification:
+    - accuracy
+    - precision_weighted
+    - recall_weighted
+    - f1_weighted
+    - precision_macro
+    - recall_macro
+    - f1_macro
+    - cohen_kappa
+    - matthews_corrcoef
+    - roc_auc_ovr
+  regression:
+    - r2
+    - mae
+    - mse
+    - rmse
+    - mape
+    - explained_variance
+
+reports:
+  output_path: "reports/"

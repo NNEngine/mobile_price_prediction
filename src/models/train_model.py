@@ -8,8 +8,8 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
+# opening params.yaml
 ROOT = Path(__file__).resolve().parents[2]
-
 with open(ROOT / "params.yaml") as f:
     params = yaml.safe_load(f)
 
