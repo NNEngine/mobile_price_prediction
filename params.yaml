@@ -43,7 +43,8 @@ target:
 
 task:
   ratio: 10
-
+train_test_split:
+  ratio: 0.2
 model_params:
   classification:
     LogisticRegression:

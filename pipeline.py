@@ -71,7 +71,7 @@ def stage_features(df):
     y = df[TARGET]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+        X, y, test_size=params["train_test_split"]["ratio"], random_state=42
     )
     logger.info(f"Train size: {X_train.shape}, Test size: {X_test.shape}")
     return X_train, X_test, y_train, y_test
